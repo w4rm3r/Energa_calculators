@@ -23,7 +23,9 @@ def fetch_json_and_write_specific_values(url, output_file):
                 for item in data.get("value", []):
                     # Extract "udtczas" and "rce_pln" values
                     udtczas = item.get("udtczas", "")
-                    udtczas_datetime = datetime.datetime.strptime(udtczas, '%Y-%m-%d %H:%M')
+                    if "a" in udtczas:
+                        continue
+                    udtczas_datetime = datetime.datetime.strptime(udtczas, '%Y-%m-%d %H:%M:%S')
                     udtczas_datetime = udtczas_datetime - offset
                     udtczas = udtczas_datetime.strftime('%Y-%m-%d %H:%M')
                     rce_pln = item.get("rce_pln", "")
@@ -43,10 +45,10 @@ def fetch_json_and_write_specific_values(url, output_file):
 
 
 # Example usage
-start_date = datetime.date(2024,10, 1)
-end_date = datetime.date(2024,10, 11)
+start_date = datetime.date(2024,12, 1)
+end_date = datetime.date(2024,12, 31)
 delta = datetime.timedelta(days=1)
 offset = datetime.timedelta(minutes=15)
 url = "https://api.raporty.pse.pl/api/rce-pln?$filter=business_date eq "  # Replace with your actual URL
-output_file = 'RCE_pazdziernik.txt'  # Specify the output file
+output_file = 'RCE_grudzien.txt'  # Specify the output file
 fetch_json_and_write_specific_values(url, output_file)
